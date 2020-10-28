@@ -187,7 +187,7 @@ async function run(): Promise<void> {
   const requireCommittersApproval =
     core.getInput('require_committers_approval') === 'true'
   const comment = core.getInput('comment') || ''
-  const pullRequestNumberInput = core.getInput('pullRequestNumber')
+  const pullRequestNumberInput = core.getInput('pullRequestNumber') || 'not set'
   const octokit = new github.GitHub(token)
   const context = github.context
   const repository = getRequiredEnv('GITHUB_REPOSITORY')
@@ -211,7 +211,7 @@ async function run(): Promise<void> {
       throw Error(`Could not find PR number in context payload.`)
     }
   } else if (eventName === 'workflow_run') {
-    if (pullRequestNumberInput === undefined) {
+    if (pullRequestNumberInput === 'not set') {
       throw Error(
         `If action is triggered by "workflow_run" then input "pullRequestNumber" is required.`
       )

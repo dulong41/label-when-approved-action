@@ -1603,7 +1603,7 @@ function run() {
         const userLabel = core.getInput('label') || 'not set';
         const requireCommittersApproval = core.getInput('require_committers_approval') === 'true';
         const comment = core.getInput('comment') || '';
-        const pullRequestNumberInput = core.getInput('pullRequestNumber');
+        const pullRequestNumberInput = core.getInput('pullRequestNumber') || 'not set';
         const octokit = new github.GitHub(token);
         const context = github.context;
         const repository = getRequiredEnv('GITHUB_REPOSITORY');
@@ -1624,7 +1624,7 @@ function run() {
             }
         }
         else if (eventName === 'workflow_run') {
-            if (pullRequestNumberInput === undefined) {
+            if (pullRequestNumberInput === 'not set') {
                 throw Error(`If action is triggered by "workflow_run" then input "pullRequestNumber" is required.`);
             }
             pullRequestNumber = parseInt(pullRequestNumberInput);
